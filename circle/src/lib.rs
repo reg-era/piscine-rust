@@ -5,7 +5,7 @@ pub struct Circle {
 }
 
 #[derive(Debug, Clone, Copy)]
-pub struct Point(f64, f64);
+pub struct Point(pub f64, pub f64);
 
 impl Circle {
     pub fn new(x: f64, y: f64, radius: f64) -> Self {
