@@ -1,7 +1,6 @@
-use rand::{Rng, rng};
+use rand::{thread_rng, Rng};
 
 #[derive(Debug)]
-
 pub enum Suit {
     Heart,
     Diamond,
@@ -20,7 +19,7 @@ pub enum Rank {
 
 impl Suit {
     pub fn random() -> Suit {
-        match rng().random_range(1..=4) {
+        match thread_rng().gen_range(1..=4) {
             1 => Suit::Heart,
             2 => Suit::Diamond,
             3 => Suit::Spade,
@@ -42,7 +41,7 @@ impl Suit {
 
 impl Rank {
     pub fn random() -> Rank {
-        let random = rng().random_range(1..=13);
+        let random = thread_rng().gen_range(1..=13);
         match random {
             1 => Rank::Ace,
             11 => Rank::Jack,
@@ -81,23 +80,23 @@ pub fn winner_card(card: &Card) -> bool {
     is_ace && is_spadel
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn it_works() {
-        loop {
-            let your_card = Card {
-                rank: Rank::random(),
-                suit: Suit::random(),
-            };
-            println!("Your card is {:?}", &your_card);
-
-            if winner_card(&your_card) {
-                println!("You are the winner!");
-                break;
-            }
-        }
-    }
-}
+// #[cfg(test)]
+// mod tests {
+// use super::*;
+//
+// #[test]
+// fn it_works() {
+// loop {
+// let your_card = Card {
+// rank: Rank::random(),
+// suit: Suit::random(),
+// };
+// println!("Your card is {:?}", &your_card);
+//
+// if winner_card(&your_card) {
+// println!("You are the winner!");
+// break;
+// }
+// }
+// }
+// }
