@@ -1,23 +1,30 @@
 pub fn edit_distance(source: &str, target: &str) -> usize {
-    let mut linked = String::new();
-    let mut count = 0;
+    let m = source.len();
+    let n = target.len();
 
-    let mut index = 0;
-    while linked != target {
-        if index > source.len() {
-            break;
-        }
-        if source.chars().nth(index) != target.chars().nth(index) {
-            count += 1;
-        } else {
-            linked.push(target.chars().nth(index).expect("wiiw"));
-        }
-        index += 1;
+    let mut dp = vec![vec![0; n + 1]; m + 1];
+
+    for i in 0..=m {
+        dp[i][0] = i;
     }
-    if index != source.len() {
-        count += target.len() - index;
+    for j in 0..=n {
+        dp[0][j] = j;
     }
-    count
+    // for c in dp.clone() {
+        // println!("ss {:?}", c);
+    // }
+
+    for (i, sc) in source.chars().enumerate() {
+        for (j, tc) in target.chars().enumerate() {
+            let cost = if sc == tc { 0 } else { 1 };
+            dp[i + 1][j + 1] = *[dp[i][j + 1] + 1, dp[i + 1][j] + 1, dp[i][j] + cost]
+                .iter()
+                .min()
+                .unwrap();
+        }
+    }
+
+    dp[m][n]
 }
 
 #[cfg(test)]
@@ -26,17 +33,24 @@ mod tests {
 
     #[test]
     fn it_works() {
-        let source = "alignment";
-        let target = "assignment";
-        
-        println!(
-        "It's necessary to make {} change(s) to {:?} to get {:?}",
-        edit_distance(source, target),
-        source,
-        target
-        );
+        // let source = "alignment";
+        // let target = "assignment";
+        //
+        // println!(
+        // "It's necessary to make {} change(s) to {:?} to get {:?}",
+        // edit_distance(source, target),
+        // source,
+        // target
+        // );
         println!("{} f {}", edit_distance("gumbo", "gambol"), 2);
-        println!("{} f {}", edit_distance("kitten", "sitting"), 3);
-        println!("{} f {}", edit_distance("rosettacode", "raisethysword"), 8);
+        // println!("{} f {}", edit_distance("kitten", "sitting"), 3);
+        // println!("{} f {}", edit_distance("rosettacode", "raisethysword"), 8);
     }
 }
+//    '  g  a  m  b  o  l
+// ' [0, 1, 2, 3, 4, 5, 6]
+// g [1, 0, 1, 2, 3, 4, 5]
+// u [2, 1, 1, 2, 3, 4, 5]
+// m [3, 2, 2, 1, 2, 3, 4]
+// b [4, 3, 3, 2, 1, 2, 3]
+// o [5, 4, 4, 3, 2, 1, 2]
