@@ -1,7 +1,14 @@
 use std::collections::HashMap;
 
 pub fn word_frequency_counter<'a>(words: &[&'a str]) -> HashMap<&'a str, usize> {
-    let res: HashMap<&str, usize> = HashMap::new();
+    let mut res: HashMap<&str, usize> = HashMap::new();
+    for word in words {
+        let count = match res.get(word){
+            Some(c) => c+1,
+            None => 0, 
+        };
+        res.insert(word,count);
+    }
     res
 }
 
