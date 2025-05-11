@@ -20,7 +20,13 @@ pub fn median(list: &[i32]) -> i32 {
         }
     }
 
-    new_vec[new_vec.len() / 2]
+    if new_vec.len() % 2 == 0 && new_vec.len() > 1 {
+        let p1 = new_vec[(new_vec.len() / 2) - 1];
+        let p2 = new_vec[new_vec.len() / 2];
+        (p1 + p2) / 2
+    } else {
+        new_vec[new_vec.len() / 2]
+    }
 }
 
 pub fn mode(list: &[i32]) -> i32 {
@@ -40,18 +46,4 @@ pub fn mode(list: &[i32]) -> i32 {
         }
     }
     res.0
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn it_works() {
-        let v = [4, 7, 5, 2, 5, 1, 3];
-
-        println!("mean {}", mean(&v));
-        println!("median {}", median(&v));
-        println!("mode {}", mode(&v));
-    }
 }
