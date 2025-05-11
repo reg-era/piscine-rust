@@ -5,7 +5,7 @@ pub fn word_frequency_counter<'a>(words: &[&'a str]) -> HashMap<&'a str, usize> 
     for word in words {
         let count = match res.get(word){
             Some(c) => c+1,
-            None => 0, 
+            None => 1, 
         };
         res.insert(word,count);
     }
