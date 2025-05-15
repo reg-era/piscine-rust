@@ -14,7 +14,7 @@ pub fn fetch_data(server: Result<&str, &str>, security_level: Security) -> Strin
         },
         Err(m) => match security_level {
             Security::Unknown => {
-                panic!("ERROR CRITICAL");
+                panic!("called `Result::unwrap()` on an `Err` value: \"{m}\"");
             }
             Security::Message => {
                 panic!("ERROR: program stops");
