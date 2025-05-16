@@ -22,7 +22,7 @@ impl Display for ParseErr {
 
 impl Display for ReadErr {
     fn fmt(&self, format: &mut fmt::Formatter) -> fmt::Result {
-        write!(format, "Failed to parse todo file")
+        write!(format, "Failed to read todo file")
     }
 }
 

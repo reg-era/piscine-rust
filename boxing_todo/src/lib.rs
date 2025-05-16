@@ -91,5 +91,17 @@ impl TodoList {
 // }
 // }
 // }
+
+// #[test]
+// fn test_read_err() {
+// let result = TodoList::get_todo("invalid_file.json").unwrap_err();
+//
+// let ReadErr { child_err } = result.downcast_ref().unwrap();
+//
+// assert!(child_err.is::<io::Error>());
+// assert!(result.source().unwrap().is::<io::Error>());
+// assert_eq!(result.to_string(), "Failed to read todo file");
+// }
+
 // }
 // }
