@@ -4,7 +4,7 @@ pub use std::error::Error;
 pub use std::fs;
 // use std::{fs::File, io::Write};
 
-use err::{ParseErr, ReadErr};
+pub use err::{ParseErr, ReadErr};
 
 #[derive(Debug, Eq, PartialEq)]
 pub struct Task {
