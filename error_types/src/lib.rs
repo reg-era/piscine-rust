@@ -1,4 +1,4 @@
-use chrono::*;
+use chrono::Utc;
 // this will be the structure that wil handle the errors
 #[derive(Debug, Eq, PartialEq)]
 pub struct FormError {
@@ -17,7 +17,7 @@ impl FormError {
         match new_form.validate() {
             Ok(()) => FormError {
                 form_values: ("name", new_form.name.clone().to_string()),
-                date: chrono::Utc::now().format("%Y-%m-%d %H:%M:%S").to_string(),
+                date: Utc::now().format("%Y-%m-%d %H:%M:%S").to_string(),
                 err: err,
             },
             Err(error) => error,
@@ -36,13 +36,13 @@ impl Form {
         if self.name.len() == 0 {
             Err(FormError {
                 form_values: ("name", self.name.clone().to_string()),
-                date: chrono::Utc::now().format("%Y-%m-%d %H:%M:%S").to_string(),
+                date: Utc::now().format("%Y-%m-%d %H:%M:%S").to_string(),
                 err: "Username is empty",
             })
         } else if self.password.len() < 8 {
             Err(FormError {
                 form_values: ("password", self.password.clone()),
-                date: chrono::Utc::now().format("%Y-%m-%d %H:%M:%S").to_string(),
+                date: Utc::now().format("%Y-%m-%d %H:%M:%S").to_string(),
                 err: "Password should be at least 8 characters long",
             })
         } else {
@@ -65,7 +65,7 @@ impl Form {
             } else {
                 Err(FormError {
                     form_values: ("password", self.password.clone()),
-                    date: chrono::Utc::now().format("%Y-%m-%d %H:%M:%S").to_string(),
+                    date: Utc::now().format("%Y-%m-%d %H:%M:%S").to_string(),
                     err: "Password should be a combination of ASCII numbers, letters and symbols",
                 })
             }
