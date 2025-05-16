@@ -1,5 +1,7 @@
-pub use core::fmt;
-pub use std::{error::Error, fmt::Display};
+pub use std::{
+    error::Error,
+    fmt::{self, Display},
+};
 
 #[derive(Debug)]
 pub enum ParseErr {
