@@ -1,23 +1,24 @@
+use chrono::Utc;
 // this will be the structure that wil handle the errors
 #[derive(Debug, Eq, PartialEq)]
 pub struct FormError {
-    pub form_values: (String, String),
+    pub form_values: (&'static str, String),
     pub date: String,
-    pub err: String,
+    pub err: &'static str,
 }
 
 impl FormError {
     pub fn new(field_name: &'static str, field_value: String, err: &'static str) -> Self {
         let new_form = Form {
             name: field_name.to_string(),
-            password: field_value.to_string(),
+            password: field_value,
         };
 
         match new_form.validate() {
             Ok(()) => FormError {
-                form_values: ("name".to_string(), new_form.name.clone()),
-                date: chrono::Utc::now().format("%Y-%m-%d %H:%M:%S").to_string(),
-                err: err.to_string(),
+                form_values: ("name", new_form.name.clone().to_string()),
+                date: Utc::now().format("%Y-%m-%d %H:%M:%S").to_string(),
+                err: err,
             },
             Err(error) => error,
         }
@@ -34,15 +35,15 @@ impl Form {
     pub fn validate(&self) -> Result<(), FormError> {
         if self.name.len() == 0 {
             Err(FormError {
-                form_values: ("name".to_string(), self.name.clone()),
-                date: chrono::Utc::now().format("%Y-%m-%d %H:%M:%S").to_string(),
-                err: "Username is empty".to_string(),
+                form_values: ("name", self.name.clone().to_string()),
+                date: Utc::now().format("%Y-%m-%d %H:%M:%S").to_string(),
+                err: "Username is empty",
             })
         } else if self.password.len() < 8 {
             Err(FormError {
-                form_values: ("password".to_string(), self.password.clone()),
-                date: chrono::Utc::now().format("%Y-%m-%d %H:%M:%S").to_string(),
-                err: "Password should be at least 8 characters long".to_string(),
+                form_values: ("password", self.password.clone()),
+                date: Utc::now().format("%Y-%m-%d %H:%M:%S").to_string(),
+                err: "Password should be at least 8 characters long",
             })
         } else {
             let mut is_alpha = false;
@@ -63,10 +64,9 @@ impl Form {
                 Ok(())
             } else {
                 Err(FormError {
-                    form_values: ("password".to_string(), self.password.clone()),
-                    date: chrono::Utc::now().format("%Y-%m-%d %H:%M:%S").to_string(),
-                    err: "Password should be a combination of ASCII numbers, letters and symbols"
-                        .to_string(),
+                    form_values: ("password", self.password.clone()),
+                    date: Utc::now().format("%Y-%m-%d %H:%M:%S").to_string(),
+                    err: "Password should be a combination of ASCII numbers, letters and symbols",
                 })
             }
         }
@@ -79,25 +79,73 @@ mod tests {
 
     #[test]
     fn it_works() {
-        let mut form_output = Form {
-            name: "Lee".to_owned(),
-            password: "qwqwsa1dty_".to_owned(),
-        };
+        let cases = [
+            (
+                Form {
+                    name: "Katy".to_owned(),
+                    password: "qwTw12&%$3sa1dty_".to_owned(),
+                },
+                Ok(()),
+            ),
+            (
+                Form {
+                    name: "".to_owned(),
+                    password: "qwTw12&%$3sa1dty_".to_owned(),
+                },
+                Err(FormError {
+                    form_values: ("name", "".to_owned()),
+                    date: Utc::now().format("%Y-%m-%d %H:%M:%S").to_string(),
+                    err: "Username is empty",
+                }),
+            ),
+            (
+                Form {
+                    name: "Someone".to_owned(),
+                    password: "12345".to_owned(),
+                },
+                Err(FormError {
+                    form_values: ("password", "12345".to_owned()),
+                    date: Utc::now().format("%Y-%m-%d %H:%M:%S").to_string(),
+                    err: "Password should be at least 8 characters long",
+                }),
+            ),
+            (
+                Form {
+                    name: "Someone".to_owned(),
+                    password: "sdASDsrW".to_owned(),
+                },
+                Err(FormError {
+                    form_values: ("password", "sdASDsrW".to_owned()),
+                    date: Utc::now().format("%Y-%m-%d %H:%M:%S").to_string(),
+                    err: "Password should be a combination of ASCII numbers, letters and symbols",
+                }),
+            ),
+            (
+                Form {
+                    name: "Someone".to_owned(),
+                    password: "dsGE1SAD213".to_owned(),
+                },
+                Err(FormError {
+                    form_values: ("password", "dsGE1SAD213".to_owned()),
+                    date: Utc::now().format("%Y-%m-%d %H:%M:%S").to_string(),
+                    err: "Password should be a combination of ASCII numbers, letters and symbols",
+                }),
+            ),
+            (
+                Form {
+                    name: "Someone".to_owned(),
+                    password: "dsaSD&%DF!?=".to_owned(),
+                },
+                Err(FormError {
+                    form_values: ("password", String::from("dsaSD&%DF!?=")),
+                    date: Utc::now().format("%Y-%m-%d %H:%M:%S").to_string(),
+                    err: "Password should be a combination of ASCII numbers, letters and symbols",
+                }),
+            ),
+        ];
 
-        println!("{:?}", form_output);
-        println!("{:?}", form_output.validate());
-
-        form_output.name = "".to_owned();
-        println!("{:?}", form_output.validate());
-
-        form_output.name = "as".to_owned();
-        form_output.password = "dty_1".to_owned();
-        println!("{:?}", form_output.validate());
-
-        form_output.password = "asdasASd(_".to_owned();
-        println!("{:?}", form_output.validate());
-
-        form_output.password = "asdasASd123SA".to_owned();
-        println!("{:?}", form_output.validate());
+        for (form, expected) in cases {
+            assert_eq!(form.validate(), expected);
+        }
     }
 }
