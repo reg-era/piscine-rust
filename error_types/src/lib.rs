@@ -38,13 +38,13 @@ impl Form {
             Err(FormError {
                 form_values: ("name".to_string(), self.name.clone()),
                 date: Utc::now().format("%Y-%m-%d %H:%M:%S").to_string(),
-                err: String::from("Username is empty"),
+                err: "Username is empty".to_string(),
             })
         } else if self.password.len() < 8 {
             Err(FormError {
                 form_values: ("password".to_string(), self.password.clone()),
                 date: Utc::now().format("%Y-%m-%d %H:%M:%S").to_string(),
-                err: String::from("Password should be at least 8 characters long"),
+                err: "Password should be at least 8 characters long".to_string(),
             })
         } else {
             let mut is_alpha = false;
@@ -67,9 +67,8 @@ impl Form {
                 Err(FormError {
                     form_values: ("password".to_string(), self.password.clone()),
                     date: Utc::now().format("%Y-%m-%d %H:%M:%S").to_string(),
-                    err: String::from(
-                        "Password should be a combination of ASCII numbers, letters and symbols",
-                    ),
+                    err: "Password should be a combination of ASCII numbers, letters and symbols"
+                        .to_string(),
                 })
             }
         }
