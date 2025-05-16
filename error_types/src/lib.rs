@@ -1,11 +1,12 @@
-use chrono::Utc;
+pub use chrono::Utc;
 // this will be the structure that wil handle the errors
 #[derive(Debug, Eq, PartialEq)]
+
 pub struct FormError {
     pub form_values: (&'static str, String),
     pub date: String,
     pub err: &'static str,
-}
+}        
 
 impl FormError {
     pub fn new(field_name: &'static str, field_value: String, err: &'static str) -> Self {

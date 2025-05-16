@@ -6,7 +6,7 @@ pub struct Flag {
     pub desc: String,
 }
 
-impl<'a> Flag {
+impl<'a> Flag  {
     pub fn opt_flag(name: &'a str, d: &'a str) -> Self {
         Self {
             short_hand: String::from(format!("-{}", name.chars().nth(0).unwrap())),
