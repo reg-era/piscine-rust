@@ -1,4 +1,4 @@
-#[derive(Debug,PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub enum Role {
     Underboss,
     Caporegime,
@@ -6,18 +6,18 @@ pub enum Role {
     Associate,
 }
 
-#[derive(Debug,PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct Member {
     pub role: Role,
     pub age: u32,
 }
 
 impl Member {
-    pub fn get_promotion(&mut self){
+    pub fn get_promotion(&mut self) {
         match self.role {
             Role::Associate => self.role = Role::Soldier,
             Role::Soldier => self.role = Role::Caporegime,
-            Role::Caporegime =>  self.role = Role::Underboss,
+            Role::Caporegime => self.role = Role::Underboss,
             Role::Underboss => panic!(),
         }
     }

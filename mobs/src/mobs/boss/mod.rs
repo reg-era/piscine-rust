@@ -1,4 +1,4 @@
-#[derive(Debug,PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct Boss {
     pub name: String,
     pub age: u32,
