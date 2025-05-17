@@ -1,8 +1,8 @@
-use std::collections::HashMap;
+pub use std::collections::HashMap;
 
-mod mall;
+pub mod mall;
 
-use mall::*;
+pub use mall::*;
 
 pub fn biggest_store(mall: &Mall) -> Store {
     let mut big_store: Store = Store {
