@@ -1,4 +1,4 @@
-pub mod mobs;
+mod mobs;
 
 use mobs::{Boss, Member, Mob, Role, boss, member};
 
