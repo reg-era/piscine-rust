@@ -1,9 +1,11 @@
-pub mod mobs;
+pub mod boss;
+pub mod member;
 
 use std::collections::HashMap;
 use std::collections::HashSet;
 
-pub use mobs::*;
+pub use boss::*;
+pub use member::*;
 
 pub struct Mob {
     pub name: String,
