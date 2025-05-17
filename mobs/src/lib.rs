@@ -1,6 +1,6 @@
 pub mod mobs;
 
-pub use mobs as dyali;
+pub use mobs::{Boss, Member, Mob, Role, boss, member};
 
 #[cfg(test)]
 mod tests {
@@ -9,16 +9,22 @@ mod tests {
 
     #[test]
     fn test_steal() {
-        let mut mob1 = dyali::Mob {
+        let mut mob1 = Mob {
             name: "mob1".to_string(),
-            boss: dyali::Boss { name: "boss1".to_string(), age: 50 },
+            boss: Boss {
+                name: "boss1".to_string(),
+                age: 50,
+            },
             members: HashMap::new(),
             cities: HashSet::new(),
             wealth: 100,
         };
-        let mut mob2 = dyali::Mob {
+        let mut mob2 = Mob {
             name: "mob2".to_string(),
-            boss: dyali::Boss { name: "boss2".to_string(), age: 45 },
+            boss: Boss {
+                name: "boss2".to_string(),
+                age: 45,
+            },
             members: HashMap::new(),
             cities: HashSet::new(),
             wealth: 50,
