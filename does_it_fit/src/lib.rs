@@ -1,5 +1,5 @@
-mod areas_volumes;
-use areas_volumes::*;
+pub mod areas_volumes;
+pub use areas_volumes::*;
 
 pub fn area_fit(
     (x, y): (usize, usize),
