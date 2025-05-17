@@ -1,6 +1,6 @@
 pub mod mobs;
 
-pub use crate::mobs::{Boss, Member, Mob, Role, boss, member};
+use mobs::{Boss, Member, Mob, Role, boss, member};
 
 #[cfg(test)]
 mod tests {
