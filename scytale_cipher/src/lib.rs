@@ -1,21 +1,32 @@
 pub fn scytale_cipher(message: String, i: u32) -> String {
-    let mut res = String::new();
+    let mut name = message.to_string();
+    let mut res: Vec<Vec<char>> = Vec::new();
 
-    let sliced: Vec<char> = message.chars().collect();
-    for x in 0..i {
-        if x < sliced.len() as u32 {
-            res.push(sliced[x as usize]);
+    let mut j = 0;
+    while j < message.len() {
+        let mut first: Vec<char> = vec![' '; i as usize];
+        let mut newname = String::new();
+        for (index, chare) in name.chars().enumerate() {
+            j += 1;
+            first[index] = chare;
+            newname = name[index + 1..].to_string();
+            if index + 1 == i as usize {
+                break;
+            }
         }
-        if x+i <= (sliced.len() - 1) as u32 {
-            res.push(sliced[(x + i)as usize]);
-        }else{
-            res.push(' ');
+        name = newname;
+        res.push(first);
+    }
+
+    let mut result = String::new();
+    for j in 0..i as usize {
+        for arr in res.clone() {
+            result.push(arr[j]);
         }
     }
 
-    res.trim().to_string()
+    return result.trim().to_string();
 }
-
 #[cfg(test)]
 mod tests {
     use super::*;
