@@ -1,4 +1,4 @@
-#[derive(Copy, Clone)]
+#[derive(Debug, Copy, Clone)]
 pub struct Collatz {
     pub v: u64,
 }
@@ -7,16 +7,17 @@ impl Iterator for Collatz {
     type Item = u64;
 
     fn next(&mut self) -> Option<Self::Item> {
-        if self.v == 1 {
+        if self.v <= 1 {
             None
         } else {
+            let old = self.v;
             let next_value = if self.v % 2 == 0 {
                 self.v / 2
             } else {
                 3 * self.v + 1
             };
             self.v = next_value;
-            Some(self.v)
+            Some(old)
         }
     }
 }
@@ -28,18 +29,8 @@ impl Collatz {
 }
 
 pub fn collatz(n: u64) -> usize {
-    if n == 0 {
-        return 0;
-    }
-    let mut steps = 0;
-    let mut collatz_iter = Collatz::new(n);
-
-    // Iterating until we reach 1 (iterator will stop when it returns None)
-    while let Some(_) = collatz_iter.next() {
-        steps += 1;
-    }
-
-    steps
+    let collatz_iter = Collatz::new(n);
+    collatz_iter.count()
 }
 
 #[cfg(test)]
