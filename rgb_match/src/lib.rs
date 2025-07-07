@@ -6,27 +6,54 @@ pub struct Color {
     pub a: u8,
 }
 
+#[derive(PartialEq)]
+enum ColorePattern {
+    ColorR,
+    ColorG,
+    ColorB,
+    ColorA,
+}
+
 impl Color {
-    pub fn swap(mut self, first: u8, second: u8) -> Color {
-        let mut dada = [self.r, self.g, self.b, self.a];
-        let mut x = 0;
-        let mut y = 0;
-        for (i, da) in dada.iter().enumerate() {
-            if *da == first {
-                x = i;
-            }
-            if *da == second {
-                y = i;
-            }
+    fn find(&self, value: u8) -> ColorePattern {
+        if value == self.r {
+            ColorePattern::ColorR
+        } else if value == self.g {
+            ColorePattern::ColorG
+        } else if value == self.b {
+            ColorePattern::ColorB
+        } else {
+            ColorePattern::ColorA
         }
-        dada.swap(x,y);
-        self = Color {
-            r: dada[0],
-            g: dada[1],
-            b: dada[2],
-            a: dada[3],
+    }
+
+    pub fn swap(mut self, first: u8, second: u8) -> Color {
+        let first_match = self.find(first);
+        let second_match = self.find(second);
+
+        match first_match {
+            ColorePattern::ColorR => self.r = second,
+            ColorePattern::ColorG => self.g = second,
+            ColorePattern::ColorB => self.b = second,
+            ColorePattern::ColorA => self.a = second,
         };
-        self
+
+        match second_match {
+            ColorePattern::ColorR => self.r = first,
+
+            ColorePattern::ColorG => self.g = first,
+
+            ColorePattern::ColorB => self.b = first,
+
+            ColorePattern::ColorA => self.a = first,
+        };
+
+        Color {
+            r: self.r,
+            g: self.g,
+            b: self.b,
+            a: self.a,
+        }
     }
 }
 
@@ -60,3 +87,18 @@ mod tests {
         println!("{:?}", c.swap(c.a, c.g));
     }
 }
+// Color { r: 10, g: 200, b: 255, a: 30 }
+// Color { r: 200, g: 255, b: 10, a: 30 }
+// Color { r: 30, g: 200, b: 10, a: 255 }
+//
+// Color { r: 200, g: 255, b: 10, a: 30 }
+// Color { r: 255, g: 10, b: 200, a: 30 }
+// Color { r: 255, g: 30, b: 10, a: 200 }
+//
+// Color { r: 10, g: 200, b: 255, a: 30 }
+// Color { r: 255, g: 10, b: 200, a: 30 }
+// Color { r: 255, g: 200, b: 30, a: 10 }
+//
+// Color { r: 30, g: 200, b: 10, a: 255 }
+// Color { r: 255, g: 200, b: 30, a: 10 }
+// Color { r: 255, g: 30, b: 10, a: 200 }

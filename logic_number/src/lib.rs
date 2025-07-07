@@ -1,16 +1,27 @@
 pub fn number_logic(num: u32) -> bool {
-    num.to_string()
-        .chars()
-        .map(|c| {
-            (c).to_string()
-                .parse::<u32>()
-                .unwrap()
-                .pow(num.to_string().len() as u32)
-        })
-        .collect::<Vec<u32>>()
-        .iter()
-        .sum::<u32>()
-        == num
+    fn get_len(mut nb: u32) -> u32 {
+        let mut count = 0;
+        while nb > 0 {
+            nb = (nb as i32 / 10) as u32;
+            count += 1;
+        }
+        count
+    }
+
+    let len = get_len(num);
+    let mut copy = num as i32;
+
+    let mut splited: Vec<i32> = Vec::new();
+    while copy > 0 {
+        let last = copy % 10;
+        splited.push(last);
+        copy = copy /10;
+    }
+
+    let mut total = 0;
+    splited.into_iter().map(|n| n.pow(len)).for_each(|n| total += n);
+
+    total as u32 == num
 }
 
 #[cfg(test)]

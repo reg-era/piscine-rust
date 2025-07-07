@@ -2,9 +2,9 @@ use std::collections::HashMap;
 
 pub fn bigger(h: HashMap<&str, i32>) -> i32 {
     let mut res = 0;
-    for (_, &v) in h.iter() {
-        if v > res {
-            res = v;
+    for (_, value) in h {
+        if value > res {
+            res = value;
         }
     }
     res

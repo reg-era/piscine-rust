@@ -1,3 +1,15 @@
 pub fn stars(n: u32) -> String {
-    "*".repeat(2_i32.pow(n) as usize).to_string()
+    String::from("*".repeat((2_i32).pow(n)as usize))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn it_works() {
+        println!("{}", stars(1));
+        println!("{}", stars(4));
+        println!("{}", stars(5));
+    }
 }

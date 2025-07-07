@@ -7,17 +7,19 @@ pub struct Light {
 impl Light {
     pub fn new(alias: &str) -> Self {
         Self {
-            alias: alias.to_string(),
-            brightness: 0,
+            alias: (String::from(alias)),
+            brightness: (0),
         }
     }
 }
 
 pub fn change_brightness(lights: &mut [Light], alias: &str, value: u8) {
-    match lights.iter_mut().find(|l| l.alias == alias) {
-        Some(l) => l.brightness = value,
-        None => return,
-    };
+    for room in lights {
+        if room.alias == alias {
+            room.brightness = value;
+            break;
+        }
+    }
 }
 
 #[cfg(test)]

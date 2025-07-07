@@ -1,8 +1,10 @@
 pub fn search(array: &[i32], key: i32) -> Option<usize> {
-    for (i, &v) in array.iter().enumerate() {
-        if v == key {
+    let mut i = 0;
+    for nb in array {
+        if *nb == key {
             return Some(i);
         }
+        i+=1;
     }
     None
 }

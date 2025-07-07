@@ -1,34 +1,33 @@
 pub fn get_diamond(c: char) -> Vec<String> {
-    let alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    let mut res: Vec<String> = Vec::new();
+    let mut res = Vec::new();
 
-    let mut count = 0;
-    for x in alphabet.chars() {
-        count += 1;
-        if c == x {
-            break;
-        }
-    }
+    let n = c as u8 - b'A';
+    for i in 0..=n {
+        let letter = (b'A' + i) as char;
+        let born_spc = (n - i) as usize;
+        let midlle_spc = if i == 0 { 0 } else { (2 * i - 1) as usize };
 
-    for (i, x) in alphabet.chars().enumerate() {
-        let space = " ".repeat(count - i - 1);
-        if i == 0 {
-            res.push(format!("{}{}{}", space, x, space));
+        let line = if i == 0 {
+            format!("{}{}{}", " ".repeat(born_spc), letter, " ".repeat(born_spc))
         } else {
-            let midle_space = " ".repeat(i * 2 - 1);
-            res.push(format!("{}{}{}{}{}", space, x, midle_space, x, space));
-        }
-        if x == c {
-            break;
-        }
+            format!(
+                "{}{}{}{}{}",
+                " ".repeat(born_spc),
+                letter,
+                " ".repeat(midlle_spc),
+                letter,
+                " ".repeat(born_spc)
+            )
+        };
+
+        res.push(line);
     }
 
-    let mut combined = res.clone();
-    let mut rev = res.clone();
-    rev.pop().unwrap();
-    rev.reverse();
-    combined.extend(rev);
-    combined
+    for i in (0..n).rev() {
+        res.push(res[i as usize].clone());
+    }
+
+    res
 }
 
 #[cfg(test)]

@@ -1,18 +1,31 @@
 use std::collections::HashMap;
 
 pub fn mean(list: &[i32]) -> f64 {
-    list.iter().map(|&x| x as f64).sum::<f64>() / list.len() as f64
+    let mut res: f64 = 0.0;
+    list.iter().for_each(|nb| res = (*nb as f64) + res);
+    res / (list.len() as f64)
 }
 
 pub fn median(list: &[i32]) -> i32 {
-    let mut newlist: Vec<i32> = Vec::from(list);
-    newlist.sort();
-    if newlist.len() % 2 == 0 && newlist.len() > 1 {
-        let p1 = newlist[(newlist.len() / 2) - 1];
-        let p2 = newlist[newlist.len() / 2];
+    let mut new_vec = Vec::from(list);
+
+    let mut swapped = true;
+    while swapped {
+        swapped = false;
+        for i in 0..new_vec.len() - 1 {
+            if new_vec[i] > new_vec[i + 1] {
+                new_vec.swap(i, i + 1);
+                swapped = true;
+            }
+        }
+    }
+
+    if new_vec.len() % 2 == 0 && new_vec.len() > 1 {
+        let p1 = new_vec[(new_vec.len() / 2) - 1];
+        let p2 = new_vec[new_vec.len() / 2];
         (p1 + p2) / 2
     } else {
-        newlist[newlist.len() / 2]
+        new_vec[new_vec.len() / 2]
     }
 }
 
@@ -33,18 +46,4 @@ pub fn mode(list: &[i32]) -> i32 {
         }
     }
     res.0
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn it_works() {
-        let v = [4, 7, 5, 2, 5, 1, 3];
-
-        println!("mean {}", mean(&v));
-        println!("median {}", median(&v));
-        println!("mode {}", mode(&v));
-    }
 }
