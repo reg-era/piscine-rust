@@ -1,18 +1,18 @@
 pub fn is_pangram(s: &str) -> bool {
-    let mut count = 0;
-    let mut found = String::new();
-    for c in s.chars() {
-        if c.is_ascii_alphabetic() && !found.contains(&c.to_lowercase().to_string()) {
-            count += 1;
-            found.push_str(&c.to_lowercase().to_string());
-        }
-    }
+    let all_letter = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".chars().collect::<Vec<char>>();
+    let mut find_letter: Vec<char> = Vec::new();
 
-    if count == 26 {
-        true
-    } else {
-        false
-    }
+    s.to_uppercase()
+        .chars()
+        .filter(|c| {
+            if all_letter.contains(&c) && !find_letter.contains(&c) {
+                find_letter.push(*c);
+                return true;
+            }
+            false
+        })
+        .count()
+        == 26
 }
 
 #[cfg(test)]

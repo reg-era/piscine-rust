@@ -1,30 +1,28 @@
 pub fn edit_distance(source: &str, target: &str) -> usize {
-    let m = source.len();
-    let n = target.len();
+    let mut levensh: Vec<Vec<usize>> = vec![vec![0; target.len() + 1]; source.len() + 1];
 
-    let mut dp = vec![vec![0; n + 1]; m + 1];
-
-    for i in 0..=m {
-        dp[i][0] = i;
+    for i in 0..=source.len() {
+        levensh[i][0] = i;
     }
-    for j in 0..=n {
-        dp[0][j] = j;
+    for j in 0..=target.len() {
+        levensh[0][j] = j;
     }
-    // for c in dp.clone() {
-        // println!("ss {:?}", c);
-    // }
 
     for (i, sc) in source.chars().enumerate() {
         for (j, tc) in target.chars().enumerate() {
             let cost = if sc == tc { 0 } else { 1 };
-            dp[i + 1][j + 1] = *[dp[i][j + 1] + 1, dp[i + 1][j] + 1, dp[i][j] + cost]
-                .iter()
-                .min()
-                .unwrap();
+
+            levensh[i + 1][j + 1] = (levensh[i][j] + cost)
+                .min(levensh[i + 1][j] + 1)
+                .min(levensh[i][j + 1] + 1);
         }
     }
 
-    dp[m][n]
+    // for roe in levensh.iter() {
+    // println!("{:?}",roe);
+    // }
+
+    levensh[source.len()][target.len()]
 }
 
 #[cfg(test)]
@@ -33,24 +31,14 @@ mod tests {
 
     #[test]
     fn it_works() {
-        // let source = "alignment";
-        // let target = "assignment";
-        //
-        // println!(
-        // "It's necessary to make {} change(s) to {:?} to get {:?}",
-        // edit_distance(source, target),
-        // source,
-        // target
-        // );
-        println!("{} f {}", edit_distance("gumbo", "gambol"), 2);
-        // println!("{} f {}", edit_distance("kitten", "sitting"), 3);
-        // println!("{} f {}", edit_distance("rosettacode", "raisethysword"), 8);
+        let source = "alignment";
+        let target = "assignment";
+
+        println!(
+            "It's necessary to make {} change(s) to {:?} to get {:?}",
+            edit_distance(source, target),
+            source,
+            target
+        );
     }
 }
-//    '  g  a  m  b  o  l
-// ' [0, 1, 2, 3, 4, 5, 6]
-// g [1, 0, 1, 2, 3, 4, 5]
-// u [2, 1, 1, 2, 3, 4, 5]
-// m [3, 2, 2, 1, 2, 3, 4]
-// b [4, 3, 3, 2, 1, 2, 3]
-// o [5, 4, 4, 3, 2, 1, 2]

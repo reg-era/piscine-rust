@@ -13,14 +13,3 @@ pub fn initials(names: Vec<&str>) -> Vec<String> {
     }
     res
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn it_works() {
-        let names = vec!["Harry Potter", "Someone Else", "J. L.", "Barack Obama"];
-        println!("{:?}", initials(names));
-    }
-}

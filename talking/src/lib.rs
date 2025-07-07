@@ -1,19 +1,19 @@
-pub fn talking(text: &str) -> String {
+pub fn talking(text: &str) -> &str {
     fn is_uppercase(text: &str) -> bool {
         let letters: String = text.chars().filter(|c| c.is_alphabetic()).collect();
         letters.len() > 0 && letters.chars().all(|c| c.is_uppercase())
     }
 
     if text.trim().is_empty() {
-        return String::from("Just say something!");
+        return "Just say something!";
     } else if is_uppercase(text) && text.ends_with("?") {
-        return String::from("Quiet, I am thinking!");
+        return "Quiet, I am thinking!";
     } else if is_uppercase(text) {
-        return String::from("There is no need to yell, calm down!");
+        return "There is no need to yell, calm down!";
     } else if text.ends_with("?") {
-        return String::from("Sure.");
+        return "Sure.";
     } else {
-        return String::from("Interesting");
+        return "Interesting";
     }
 }
 
